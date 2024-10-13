@@ -99,8 +99,7 @@ correct_password = "1234"
 
 # Main page for login
 if not st.session_state.logged_in:
-    # Title and Image for the Republic of Kailasa
-    st.markdown("<h1 style='text-align: center;'>Portfolio Optimization and Analysis</h1>", unsafe_allow_html=True)
+    
 
     # Show login form only if not logged in
     with st.form("login_form"):
