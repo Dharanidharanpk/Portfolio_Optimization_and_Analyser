@@ -103,7 +103,7 @@ if not st.session_state.logged_in:
 
     # Show login form only if not logged in
     with st.form("login_form"):
-        st.markdown("<h3 style='text-align: center;'>Portfolio Optimization and Analysiser Login</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align: center;'>Portfolio Optimization and Analysiser</h3>", unsafe_allow_html=True)
 
         # Create login form fields
         username = st.text_input("Login ID")
