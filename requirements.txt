@@ -1,5 +1,5 @@
-streamlit
-yfinance
-pandas
-plotly
 sklearn
+streamlit==1.39.0
+yfinance==0.2.0
+pandas==2.2.3
+plotly==5.11.0
