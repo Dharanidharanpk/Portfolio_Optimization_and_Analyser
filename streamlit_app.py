@@ -88,40 +88,6 @@ def predict_stock_prices(df, days=90):
     return future_dates, predicted_prices
 
 
-
-# Set up session state for login
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-
-# Define the correct credentials
-correct_username = "875421"
-correct_password = "1234"
-
-# Main page for login
-if not st.session_state.logged_in:
-    
-
-    # Show login form only if not logged in
-    with st.form("login_form"):
-        st.markdown("<h3 style='text-align: center;'>Portfolio Optimization and Analyser</h3>", unsafe_allow_html=True)
-
-        # Create login form fields
-        username = st.text_input("Login ID")
-        password = st.text_input("Password", type="password")
-
-        # Login button
-        login_button = st.form_submit_button("Login")
-
-        # Login validation
-        if login_button:
-            if username == correct_username and password == correct_password:
-                st.session_state.logged_in = True
-                st.success("Logged in successfully!")
-            else:
-                st.error("Incorrect username or password. Please try again.")
-
-# If the user is logged in, show the app
-if st.session_state.logged_in:
     
     # Streamlit layout
     st.markdown("<h1 style='text-align: center;'>Portfolio Optimization and Analyser</h1>", unsafe_allow_html=True)
