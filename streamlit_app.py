@@ -103,7 +103,7 @@ if not st.session_state.logged_in:
 
     # Show login form only if not logged in
     with st.form("login_form"):
-        st.markdown("<h3 style='text-align: center;'>Portfolio Optimization and Analysiser</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align: center;'>Portfolio Optimization and Analyser</h3>", unsafe_allow_html=True)
 
         # Create login form fields
         username = st.text_input("Login ID")
@@ -124,7 +124,7 @@ if not st.session_state.logged_in:
 if st.session_state.logged_in:
     
     # Streamlit layout
-    st.markdown("<h1 style='text-align: center;'>Portfolio Optimization and Analysis</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>Portfolio Optimization and Analyser</h1>", unsafe_allow_html=True)
     
     # Input: Number of stocks and stock symbols
     num_stocks = st.number_input("Number of Stocks in Portfolio", min_value=1, max_value=10, step=1, value=5)
