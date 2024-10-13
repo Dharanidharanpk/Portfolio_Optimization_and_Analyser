@@ -113,7 +113,7 @@ def main_app():
 # Define the Team Info page with 2-2-1 layout and center alignment
 def team_info():
     # Team section title
-    st.subheader("Team Developers")
+ st.markdown("<h3 style='text-align: center;'>Team Developers</h3>", unsafe_allow_html=True)
 
     # First row (2 people)
     col1, col2 = st.columns(2)
