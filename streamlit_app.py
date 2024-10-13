@@ -94,20 +94,20 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
 # Define the correct credentials
-correct_username = "sharun875421"
+correct_username = "875421"
 correct_password = "1234"
 
 # Main page for login
 if not st.session_state.logged_in:
     # Title and Image for the Republic of Kailasa
-    st.markdown("<h1 style='text-align: center;'>REPUBLIC OF KAILASAA</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>Portfolio Optimization and Analysis</h1>", unsafe_allow_html=True)
 
     # Show login form only if not logged in
     with st.form("login_form"):
-        st.markdown("<h3 style='text-align: center;'>RESERVE BANK OF KAILASAA Employee Login</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align: center;'>Portfolio Optimization and Analysiser Login</h3>", unsafe_allow_html=True)
 
         # Create login form fields
-        username = st.text_input("RB of KAILASAA Employee ID")
+        username = st.text_input("Login ID")
         password = st.text_input("Password", type="password")
 
         # Login button
