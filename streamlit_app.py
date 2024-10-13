@@ -89,7 +89,91 @@ def predict_stock_prices(df, days=90):
 
 
 
-    
+# Instructions
+st.sidebar.title("Instructions")
+st.sidebar.write("""
+    - Input the number of stocks you want in your portfolio.
+    - Enter the stock symbols (e.g., AAPL, MSFT) for those stocks.
+    - Specify your expected portfolio return (in %).
+    - Choose a market index symbol (e.g., ^GSPC for S&P 500) for correlation analysis.
+    - Set the start and end dates for the historical data.
+    - Click the "Optimize Portfolio" button to see the results, including the optimal stock allocation, portfolio performance, stock price predictions, correlation matrix, and Monte Carlo simulation.
+""")
+
+# Define the app layout and functionality
+def main_app():
+
+    # Check if 'Meet the Team' button is pressed
+    if st.sidebar.button("Meet the Team"):
+        team_info()
+        if st.button("Back to App"):
+            st.session_state.page = "home"  # Switch back to the main app page
+
+
+# Define the Team Info page with 2-2-1 layout and center alignment
+def team_info():
+    # Team section title
+    st.subheader("Team Developers")
+
+    # First row (2 people)
+    col1, col2 = st.columns(2)
+
+    # Developer 1 in the first column
+    developer1_image_url = "https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"  # Replace with your actual Google Drive file ID
+    with col1:
+        # Center-align image and text
+        st.markdown(f"<div style='text-align: center;'><img src='{developer1_image_url}' width='300'></div>", unsafe_allow_html=True)
+        st.markdown("<h5 style='text-align: center;'>DHARANIDHARAN P K</h5>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center;'>23MBA0059</p>", unsafe_allow_html=True)
+
+    # Developer 2 in the second column
+    developer2_image_url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-ZHqWA3ajb0g2TmGMYzSoRpiR5HqjelAKfw&s"  # Replace with your actual Google Drive file ID
+    with col2:
+        # Center-align image and text
+        st.markdown(f"<div style='text-align: center;'><img src='{developer2_image_url}' width='300'></div>", unsafe_allow_html=True)
+        st.markdown("<h5 style='text-align: center;'>DHANUSHYA J</h5>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center;'>23MBA0047</p>", unsafe_allow_html=True)
+
+    # Second row (2 people)
+    col3, col4 = st.columns(2)
+
+    # Developer 3 in the first column
+    developer3_image_url = "https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"  # Replace with your actual Google Drive file ID
+    with col3:
+        # Center-align image and text
+        st.markdown(f"<div style='text-align: center;'><img src='{developer3_image_url}' width='300'></div>", unsafe_allow_html=True)
+        st.markdown("<h5 style='text-align: center;'>YUVARAJ ANAND</h5>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center;'>23MBA0086</p>", unsafe_allow_html=True)
+
+    # Developer 4 in the second column
+    developer4_image_url = "https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"  # Replace with your actual Google Drive file ID
+    with col4:
+        # Center-align image and text
+        st.markdown(f"<div style='text-align: center;'><img src='{developer4_image_url}' width='300'></div>", unsafe_allow_html=True)
+        st.markdown("<h5 style='text-align: center;'>VISHVANTH S</h5>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center;'>23MBA0121</p>", unsafe_allow_html=True)
+
+    # Third row (1 person)
+    col5 = st.columns(1)[0]  # Create a single column for the last person
+
+    # Developer 5
+    developer5_image_url = "https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"  # Replace with your actual Google Drive file ID
+    with col5:
+        # Center-align image and text
+        st.markdown(f"<div style='text-align: center;'><img src='{developer5_image_url}' width='300'></div>", unsafe_allow_html=True)
+        st.markdown("<h5 style='text-align: center;'>NAVEEN KUMAR S</h5>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center;'>23MBA0089</p>", unsafe_allow_html=True)
+
+# Initialize session state if not already set
+if "page" not in st.session_state:
+    st.session_state.page = "home"  # Default to the home page
+    # Add the 'Back to App' button
+
+# Start the app
+main_app()
+
+
+
 # Streamlit layout
 st.title("Portfolio Optimization and Analysis")
 
@@ -286,87 +370,3 @@ if st.button("Optimize Portfolio"):
 
     except Exception as e:
         st.error(f"An error occurred: {e}")
-
-# Instructions
-st.sidebar.title("Instructions")
-st.sidebar.write("""
-    - Input the number of stocks you want in your portfolio.
-    - Enter the stock symbols (e.g., AAPL, MSFT) for those stocks.
-    - Specify your expected portfolio return (in %).
-    - Choose a market index symbol (e.g., ^GSPC for S&P 500) for correlation analysis.
-    - Set the start and end dates for the historical data.
-    - Click the "Optimize Portfolio" button to see the results, including the optimal stock allocation, portfolio performance, stock price predictions, correlation matrix, and Monte Carlo simulation.
-""")
-
-# Define the app layout and functionality
-def main_app():
-
-    # Check if 'Meet the Team' button is pressed
-    if st.sidebar.button("Meet the Team"):
-        team_info()
-        if st.button("Back to App"):
-            st.session_state.page = "home"  # Switch back to the main app page
-
-
-# Define the Team Info page with 2-2-1 layout and center alignment
-def team_info():
-    # Team section title
-    st.subheader("Team Developers")
-
-    # First row (2 people)
-    col1, col2 = st.columns(2)
-
-    # Developer 1 in the first column
-    developer1_image_url = "https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"  # Replace with your actual Google Drive file ID
-    with col1:
-        # Center-align image and text
-        st.markdown(f"<div style='text-align: center;'><img src='{developer1_image_url}' width='300'></div>", unsafe_allow_html=True)
-        st.markdown("<h5 style='text-align: center;'>DHARANIDHARAN P K</h5>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center;'>23MBA0059</p>", unsafe_allow_html=True)
-
-    # Developer 2 in the second column
-    developer2_image_url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-ZHqWA3ajb0g2TmGMYzSoRpiR5HqjelAKfw&s"  # Replace with your actual Google Drive file ID
-    with col2:
-        # Center-align image and text
-        st.markdown(f"<div style='text-align: center;'><img src='{developer2_image_url}' width='300'></div>", unsafe_allow_html=True)
-        st.markdown("<h5 style='text-align: center;'>DHANUSHYA J</h5>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center;'>23MBA0047</p>", unsafe_allow_html=True)
-
-    # Second row (2 people)
-    col3, col4 = st.columns(2)
-
-    # Developer 3 in the first column
-    developer3_image_url = "https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"  # Replace with your actual Google Drive file ID
-    with col3:
-        # Center-align image and text
-        st.markdown(f"<div style='text-align: center;'><img src='{developer3_image_url}' width='300'></div>", unsafe_allow_html=True)
-        st.markdown("<h5 style='text-align: center;'>YUVARAJ ANAND</h5>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center;'>23MBA0086</p>", unsafe_allow_html=True)
-
-    # Developer 4 in the second column
-    developer4_image_url = "https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"  # Replace with your actual Google Drive file ID
-    with col4:
-        # Center-align image and text
-        st.markdown(f"<div style='text-align: center;'><img src='{developer4_image_url}' width='300'></div>", unsafe_allow_html=True)
-        st.markdown("<h5 style='text-align: center;'>VISHVANTH S</h5>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center;'>23MBA0121</p>", unsafe_allow_html=True)
-
-    # Third row (1 person)
-    col5 = st.columns(1)[0]  # Create a single column for the last person
-
-    # Developer 5
-    developer5_image_url = "https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"  # Replace with your actual Google Drive file ID
-    with col5:
-        # Center-align image and text
-        st.markdown(f"<div style='text-align: center;'><img src='{developer5_image_url}' width='300'></div>", unsafe_allow_html=True)
-        st.markdown("<h5 style='text-align: center;'>NAVEEN KUMAR S</h5>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center;'>23MBA0089</p>", unsafe_allow_html=True)
-
-# Initialize session state if not already set
-if "page" not in st.session_state:
-    st.session_state.page = "home"  # Default to the home page
-    # Add the 'Back to App' button
-
-# Start the app
-main_app()
-
