@@ -89,204 +89,238 @@ def predict_stock_prices(df, days=90):
 
 
 
+# Set up session state for login
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
 
-# Streamlit layout
-st.markdown("<h1 style='text-align: center;'>Portfolio Optimization and Analysis</h1>", unsafe_allow_html=True)
+# Define the correct credentials
+correct_username = "sharun875421"
+correct_password = "1234"
 
-# Input: Number of stocks and stock symbols
-num_stocks = st.number_input("Number of Stocks in Portfolio", min_value=1, max_value=10, step=1, value=5)
-stocks = []
-for i in range(num_stocks):
-    stock_symbol = st.text_input(f"Enter Stock {i + 1} Symbol", placeholder="AAPL, MSFT, etc.")
-    stocks.append(stock_symbol)
+# Main page for login
+if not st.session_state.logged_in:
+    # Title and Image for the Republic of Kailasa
+    st.markdown("<h1 style='text-align: center;'>REPUBLIC OF KAILASAA</h1>", unsafe_allow_html=True)
 
-# Input: Expected portfolio return
-target_return = st.number_input("Expected Portfolio Return (%)", min_value=0.0, value=10.0) / 100
+    # Show login form only if not logged in
+    with st.form("login_form"):
+        st.markdown("<h3 style='text-align: center;'>RESERVE BANK OF KAILASAA Employee Login</h3>", unsafe_allow_html=True)
 
-# Input: Market index symbol (for correlation matrix)
-market_index = st.text_input("Enter Market Index Symbol", placeholder="^GSPC (S&P 500)")
+        # Create login form fields
+        username = st.text_input("RB of KAILASAA Employee ID")
+        password = st.text_input("Password", type="password")
 
-# Input: Start and End Date for historical data
-start_date = st.date_input("Start Date", value=pd.to_datetime('2020-01-01'))
-end_date = st.date_input("End Date", value=pd.to_datetime('today'))
+        # Login button
+        login_button = st.form_submit_button("Login")
 
-# Add an input field for the number of prediction days
-prediction_days = st.number_input(
-    "Enter Number of Days for Prediction",
-    min_value=30,  # Minimum 30 days
-    max_value=180,  # Maximum 180 days
-    value=90,  # Default value
-    step=1,
-    help="Enter the number of days you want to predict for each stock."
-)
+        # Login validation
+        if login_button:
+            if username == correct_username and password == correct_password:
+                st.session_state.logged_in = True
+                st.success("Logged in successfully!")
+            else:
+                st.error("Incorrect username or password. Please try again.")
 
-# Fetch stock data
-if st.button("Optimize Portfolio"):
-    try:
-        stock_data = {}
-        for stock in stocks:
-            stock_data[stock] = yf.download(stock, start=start_date, end=end_date)['Adj Close']
-
-        stock_df = pd.DataFrame(stock_data)
-        stock_df1 = pd.DataFrame(stock_data)
-
-        # Fetch market index data
-        index_data = yf.download(market_index, start=start_date, end=end_date)['Adj Close']
-
-        stock_df1[market_index] = index_data
-
-        # Calculate daily returns for stocks only (excluding market index)
-        daily_returns = stock_df.pct_change().dropna()  # Only for stocks, not the market index
-
-        daily_returns1 = stock_df1.pct_change().dropna()
-
-        # Calculate mean returns and covariance matrix
-        mean_returns = daily_returns.mean()
-        cov_matrix = daily_returns.cov()
-
-        # Historical stock price trends (using Plotly)
-        st.subheader("Historical Stock Price Trends")
-        for stock in stocks:
+# If the user is logged in, show the app
+if st.session_state.logged_in:
+    
+    # Streamlit layout
+    st.markdown("<h1 style='text-align: center;'>Portfolio Optimization and Analysis</h1>", unsafe_allow_html=True)
+    
+    # Input: Number of stocks and stock symbols
+    num_stocks = st.number_input("Number of Stocks in Portfolio", min_value=1, max_value=10, step=1, value=5)
+    stocks = []
+    for i in range(num_stocks):
+        stock_symbol = st.text_input(f"Enter Stock {i + 1} Symbol", placeholder="AAPL, MSFT, etc.")
+        stocks.append(stock_symbol)
+    
+    # Input: Expected portfolio return
+    target_return = st.number_input("Expected Portfolio Return (%)", min_value=0.0, value=10.0) / 100
+    
+    # Input: Market index symbol (for correlation matrix)
+    market_index = st.text_input("Enter Market Index Symbol", placeholder="^GSPC (S&P 500)")
+    
+    # Input: Start and End Date for historical data
+    start_date = st.date_input("Start Date", value=pd.to_datetime('2020-01-01'))
+    end_date = st.date_input("End Date", value=pd.to_datetime('today'))
+    
+    # Add an input field for the number of prediction days
+    prediction_days = st.number_input(
+        "Enter Number of Days for Prediction",
+        min_value=30,  # Minimum 30 days
+        max_value=180,  # Maximum 180 days
+        value=90,  # Default value
+        step=1,
+        help="Enter the number of days you want to predict for each stock."
+    )
+    
+    # Fetch stock data
+    if st.button("Optimize Portfolio"):
+        try:
+            stock_data = {}
+            for stock in stocks:
+                stock_data[stock] = yf.download(stock, start=start_date, end=end_date)['Adj Close']
+    
+            stock_df = pd.DataFrame(stock_data)
+            stock_df1 = pd.DataFrame(stock_data)
+    
+            # Fetch market index data
+            index_data = yf.download(market_index, start=start_date, end=end_date)['Adj Close']
+    
+            stock_df1[market_index] = index_data
+    
+            # Calculate daily returns for stocks only (excluding market index)
+            daily_returns = stock_df.pct_change().dropna()  # Only for stocks, not the market index
+    
+            daily_returns1 = stock_df1.pct_change().dropna()
+    
+            # Calculate mean returns and covariance matrix
+            mean_returns = daily_returns.mean()
+            cov_matrix = daily_returns.cov()
+    
+            # Historical stock price trends (using Plotly)
+            st.subheader("Historical Stock Price Trends")
+            for stock in stocks:
+                fig = go.Figure()
+                fig.add_trace(go.Scatter(x=stock_data[stock].index, y=stock_data[stock], mode='lines', name=stock))
+                fig.update_layout(title=f'{stock} Price Trend', xaxis_title='Date', yaxis_title='Price')
+                st.plotly_chart(fig)
+    
+            # Stock Price Comparison Chart (using Plotly)
+            st.subheader("Stock Price Comparison Chart")
             fig = go.Figure()
-            fig.add_trace(go.Scatter(x=stock_data[stock].index, y=stock_data[stock], mode='lines', name=stock))
-            fig.update_layout(title=f'{stock} Price Trend', xaxis_title='Date', yaxis_title='Price')
+            for stock in stocks:
+                fig.add_trace(go.Scatter(x=stock_df.index, y=stock_df[stock], mode='lines', name=stock))
+            fig.update_layout(title='Stock Price Comparison', xaxis_title='Date', yaxis_title='Price')
             st.plotly_chart(fig)
-
-        # Stock Price Comparison Chart (using Plotly)
-        st.subheader("Stock Price Comparison Chart")
-        fig = go.Figure()
-        for stock in stocks:
-            fig.add_trace(go.Scatter(x=stock_df.index, y=stock_df[stock], mode='lines', name=stock))
-        fig.update_layout(title='Stock Price Comparison', xaxis_title='Date', yaxis_title='Price')
-        st.plotly_chart(fig)
-
-
-        # Portfolio cumulative returns
-        st.subheader("Portfolio Cumulative Returns")
-        cumulative_returns = (daily_returns + 1).cumprod()
-        st.line_chart(cumulative_returns)
-
-        # Stock correlation heatmap (using Plotly)
-        st.subheader("Stock Correlation Heatmap")
-        correlation_matrix = daily_returns.corr()
-        fig = px.imshow(correlation_matrix, text_auto=True, title="Stock Correlation Matrix", aspect="auto")
-        st.plotly_chart(fig)
-
-        # Correlation Matrix with Market Index (using Plotly)
-        st.subheader("Correlation Matrix with Market Index")
-        fig = px.imshow(daily_returns1.corr(), text_auto=True, title=f"Correlation Matrix (including {market_index})",
-                        aspect="auto")
-        st.plotly_chart(fig)
-
-        # Concerns Table (Display using Plotly)
-        st.subheader("Stock Risk and Return")
-        concerns_table = pd.DataFrame({
-            'Stock': stocks,
-            'Average Return': mean_returns[stocks] * 252,
-            'Risk (Standard Deviation)': np.sqrt(np.diag(cov_matrix.loc[stocks, stocks])) * np.sqrt(252)
-        })
-        st.write(concerns_table)
-
-
-
-        # Streamlit layout for stock price trends with future predictions
-        st.subheader("Stock Price Trends with Future Predictions")
-        # Loop through the selected stocks and plot actual vs predicted prices
-        for stock in stocks:
-            # Perform prediction with the selected number of days
-            future_dates, predicted_prices = predict_stock_prices(yf.download(stock, start=start_date, end=end_date),
-                                                                  days=prediction_days)
-
-            # Create the figure for actual vs predicted stock prices
-            fig = go.Figure()
-
-            # Add trace for actual prices
-            fig.add_trace(go.Scatter(x=stock_df.index, y=stock_df[stock], mode='lines', name='Actual'))
-
-            # Add trace for predicted prices
-            fig.add_trace(
-                go.Scatter(x=future_dates, y=predicted_prices, mode='lines', name='Predicted', line=dict(dash='dash')))
-
-            # Update layout
-            fig.update_layout(
-                title=f'{stock} Price with Prediction for {prediction_days} Days',
-                xaxis_title='Date',
-                yaxis_title='Price'
-            )
-
-            # Render the plot
+    
+    
+            # Portfolio cumulative returns
+            st.subheader("Portfolio Cumulative Returns")
+            cumulative_returns = (daily_returns + 1).cumprod()
+            st.line_chart(cumulative_returns)
+    
+            # Stock correlation heatmap (using Plotly)
+            st.subheader("Stock Correlation Heatmap")
+            correlation_matrix = daily_returns.corr()
+            fig = px.imshow(correlation_matrix, text_auto=True, title="Stock Correlation Matrix", aspect="auto")
             st.plotly_chart(fig)
-
-
-
-        # Optimize for the target return
-        results = []
-        for i in range(1, num_stocks + 1):
-            selected_stocks = stocks[:i]
-            if len(selected_stocks) > 0:
-                selected_mean_returns = mean_returns[selected_stocks]
-                selected_cov_matrix = cov_matrix.loc[selected_stocks, selected_stocks]
-
-                result = optimize_for_target_return(selected_mean_returns, selected_cov_matrix, target_return)
-
-                if result.success:
-                    results.append((selected_stocks, result.x, result))
-
-        # Monte Carlo simulation (using Plotly)
-        st.subheader("Monte Carlo Simulation for Portfolio Optimization")
-        simulation_results, _ = monte_carlo_simulation(mean_returns, cov_matrix)
-
-        # Plotting the simulation results with Plotly
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(x=simulation_results[1], y=simulation_results[0], mode='markers',
-                                 marker=dict(color=simulation_results[2], colorscale='Viridis', size=7),
-                                 text=["Sharpe: {:.2f}".format(x) for x in simulation_results[2]]))
-        fig.update_layout(title="Monte Carlo Simulation: Portfolio Optimization",
-                          xaxis_title="Risk (Standard Deviation)", yaxis_title="Return")
-        st.plotly_chart(fig)
-
-        # Display the optimal portfolio allocation
-        if results:
-            optimal_portfolio = max(results, key=lambda x:
-            portfolio_performance(x[1], mean_returns[x[0]], cov_matrix.loc[x[0], x[0]])[0])
-            optimal_weights = optimal_portfolio[1]
-            selected_stocks = optimal_portfolio[0]
-
-
-            allocation_df = pd.DataFrame({
-                'Stock': selected_stocks,
-                'Price': [stock_data[stock].iloc[-1] for stock in selected_stocks],  # Latest price for each stock
-                'Weight': optimal_weights,
+    
+            # Correlation Matrix with Market Index (using Plotly)
+            st.subheader("Correlation Matrix with Market Index")
+            fig = px.imshow(daily_returns1.corr(), text_auto=True, title=f"Correlation Matrix (including {market_index})",
+                            aspect="auto")
+            st.plotly_chart(fig)
+    
+            # Concerns Table (Display using Plotly)
+            st.subheader("Stock Risk and Return")
+            concerns_table = pd.DataFrame({
+                'Stock': stocks,
+                'Average Return': mean_returns[stocks] * 252,
+                'Risk (Standard Deviation)': np.sqrt(np.diag(cov_matrix.loc[stocks, stocks])) * np.sqrt(252)
             })
-
-
-
-
-            # Stock distribution pie chart
-            st.subheader("Stock Distribution Based on Optimal Weights")
-            fig = px.pie(values=optimal_weights, names=selected_stocks, title="Optimal Portfolio Allocation")
+            st.write(concerns_table)
+    
+    
+    
+            # Streamlit layout for stock price trends with future predictions
+            st.subheader("Stock Price Trends with Future Predictions")
+            # Loop through the selected stocks and plot actual vs predicted prices
+            for stock in stocks:
+                # Perform prediction with the selected number of days
+                future_dates, predicted_prices = predict_stock_prices(yf.download(stock, start=start_date, end=end_date),
+                                                                      days=prediction_days)
+    
+                # Create the figure for actual vs predicted stock prices
+                fig = go.Figure()
+    
+                # Add trace for actual prices
+                fig.add_trace(go.Scatter(x=stock_df.index, y=stock_df[stock], mode='lines', name='Actual'))
+    
+                # Add trace for predicted prices
+                fig.add_trace(
+                    go.Scatter(x=future_dates, y=predicted_prices, mode='lines', name='Predicted', line=dict(dash='dash')))
+    
+                # Update layout
+                fig.update_layout(
+                    title=f'{stock} Price with Prediction for {prediction_days} Days',
+                    xaxis_title='Date',
+                    yaxis_title='Price'
+                )
+    
+                # Render the plot
+                st.plotly_chart(fig)
+    
+    
+    
+            # Optimize for the target return
+            results = []
+            for i in range(1, num_stocks + 1):
+                selected_stocks = stocks[:i]
+                if len(selected_stocks) > 0:
+                    selected_mean_returns = mean_returns[selected_stocks]
+                    selected_cov_matrix = cov_matrix.loc[selected_stocks, selected_stocks]
+    
+                    result = optimize_for_target_return(selected_mean_returns, selected_cov_matrix, target_return)
+    
+                    if result.success:
+                        results.append((selected_stocks, result.x, result))
+    
+            # Monte Carlo simulation (using Plotly)
+            st.subheader("Monte Carlo Simulation for Portfolio Optimization")
+            simulation_results, _ = monte_carlo_simulation(mean_returns, cov_matrix)
+    
+            # Plotting the simulation results with Plotly
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(x=simulation_results[1], y=simulation_results[0], mode='markers',
+                                     marker=dict(color=simulation_results[2], colorscale='Viridis', size=7),
+                                     text=["Sharpe: {:.2f}".format(x) for x in simulation_results[2]]))
+            fig.update_layout(title="Monte Carlo Simulation: Portfolio Optimization",
+                              xaxis_title="Risk (Standard Deviation)", yaxis_title="Return")
             st.plotly_chart(fig)
-
-            # Show optimal portfolio weight allocation
-            st.subheader("Optimal Portfolio Weights")
-            for i, symbol in enumerate(selected_stocks):
-                st.write(f"{symbol}: {optimal_weights[i] * 100:.2f}%")
-
-            st.subheader("Optimal Portfolio Allocation")
-            st.write(allocation_df)
-            # Display the portfolio performance
-            expected_return, expected_risk = portfolio_performance(optimal_weights, mean_returns[selected_stocks],
-                                                                   cov_matrix.loc[selected_stocks, selected_stocks])
-            st.write(f"Expected Portfolio Return: {expected_return * 100:.2f}%")
-            st.write(f"Portfolio Risk (Standard Deviation): {expected_risk * 100:.2f}%")
-            st.write(f"Sharpe Ratio: {(expected_return - 0.0175) / expected_risk:.2f}")
-
-
-
-
-    except Exception as e:
-        st.error(f"An error occurred: {e}")
-
+    
+            # Display the optimal portfolio allocation
+            if results:
+                optimal_portfolio = max(results, key=lambda x:
+                portfolio_performance(x[1], mean_returns[x[0]], cov_matrix.loc[x[0], x[0]])[0])
+                optimal_weights = optimal_portfolio[1]
+                selected_stocks = optimal_portfolio[0]
+    
+    
+                allocation_df = pd.DataFrame({
+                    'Stock': selected_stocks,
+                    'Price': [stock_data[stock].iloc[-1] for stock in selected_stocks],  # Latest price for each stock
+                    'Weight': optimal_weights,
+                })
+    
+    
+    
+    
+                # Stock distribution pie chart
+                st.subheader("Stock Distribution Based on Optimal Weights")
+                fig = px.pie(values=optimal_weights, names=selected_stocks, title="Optimal Portfolio Allocation")
+                st.plotly_chart(fig)
+    
+                # Show optimal portfolio weight allocation
+                st.subheader("Optimal Portfolio Weights")
+                for i, symbol in enumerate(selected_stocks):
+                    st.write(f"{symbol}: {optimal_weights[i] * 100:.2f}%")
+    
+                st.subheader("Optimal Portfolio Allocation")
+                st.write(allocation_df)
+                # Display the portfolio performance
+                expected_return, expected_risk = portfolio_performance(optimal_weights, mean_returns[selected_stocks],
+                                                                       cov_matrix.loc[selected_stocks, selected_stocks])
+                st.write(f"Expected Portfolio Return: {expected_return * 100:.2f}%")
+                st.write(f"Portfolio Risk (Standard Deviation): {expected_risk * 100:.2f}%")
+                st.write(f"Sharpe Ratio: {(expected_return - 0.0175) / expected_risk:.2f}")
+    
+    
+    
+    
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
+    
 
 
 # Instructions
