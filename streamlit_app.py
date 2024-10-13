@@ -88,6 +88,9 @@ def predict_stock_prices(df, days=90):
     return future_dates, predicted_prices
 
 
+# Define the app layout and functionality
+def main_app():
+    
 # Streamlit layout
 st.title("Portfolio Optimization and Analysis")
 
@@ -297,8 +300,6 @@ st.sidebar.write("""
 """)
 
 
-# Define the app layout and functionality
-def main_app():
 
     # Check if 'Meet the Team' button is pressed
     if st.sidebar.button("Meet the Team"):
