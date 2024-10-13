@@ -175,7 +175,7 @@ main_app()
 
 
 # Streamlit layout
-st.title("Portfolio Optimization and Analysis")
+st.title("<style='text-align: center;'>Portfolio Optimization and Analysis</>", unsafe_allow_html=True)
 
 # Input: Number of stocks and stock symbols
 num_stocks = st.number_input("Number of Stocks in Portfolio", min_value=1, max_value=10, step=1, value=5)
