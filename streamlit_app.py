@@ -244,7 +244,7 @@ if st.button("Optimize Portfolio"):
                           xaxis_title="Risk (Standard Deviation)", yaxis_title="Return")
         st.plotly_chart(fig)
 
-        # Display the optimal portfolio allocation
+                # Display the optimal portfolio allocation
         if results:
             optimal_portfolio = max(results, key=lambda x:
             portfolio_performance(x[1], mean_returns[x[0]], cov_matrix.loc[x[0], x[0]])[0])
@@ -259,25 +259,33 @@ if st.button("Optimize Portfolio"):
             })
 
 
+            # Optimal portfolio (minimize volatility)
+            def minimize_volatility(weights):
+                return portfolio_performance(weights, mean_returns, cov_matrix)[1]
 
+
+            constraints = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
+            bounds = tuple((0, 1) for _ in range(len(mean_returns)))
+            result = minimize(minimize_volatility, len(mean_returns) * [1. / len(mean_returns)], method='SLSQP',
+                              bounds=bounds, constraints=constraints)
+
+            optimal_weights = result['x']
 
             # Stock distribution pie chart
             st.subheader("Stock Distribution Based on Optimal Weights")
-            fig = px.pie(values=optimal_weights, names=selected_stocks, title="Optimal Portfolio Allocation")
+            fig = px.pie(values=optimal_weights, names=stocks, title="Optimal Portfolio Allocation")
             st.plotly_chart(fig)
 
-            # Show optimal portfolio weight allocation
-            st.subheader("Optimal Portfolio Weights")
-            for i, symbol in enumerate(selected_stocks):
-                st.write(f"{symbol}: {optimal_weights[i] * 100:.2f}%")
-
+            #
             st.subheader("Optimal Portfolio Allocation")
-            st.write(allocation_df)
+            allocation_df = pd.DataFrame({'Stock': stocks, 'Weightage': optimal_weights * 100})
+            st.dataframe(allocation_df)
+
             # Display the portfolio performance
-            expected_return, expected_risk = portfolio_performance(optimal_weights, mean_returns[selected_stocks],
-                                                                   cov_matrix.loc[selected_stocks, selected_stocks])
+            expected_return, expected_risk = portfolio_performance(optimal_weights, mean_returns[stocks],
+                                                                   cov_matrix.loc[stocks, stocks])
             st.write(f"Expected Portfolio Return: {expected_return * 100:.2f}%")
-            st.write(f"Portfolio Risk (Standard Deviation): {expected_risk * 100:.2f}%")
+            st.write(f"Portfolio Risk (Standard Deviation): {expected_risk * 100:.2f}%")        
             st.write(f"Sharpe Ratio: {(expected_return - 0.0175) / expected_risk:.2f}")
 
 
