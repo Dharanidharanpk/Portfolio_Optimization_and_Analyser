@@ -266,7 +266,7 @@ if st.session_state.logged_in:
                         results.append((selected_stocks, result.x, result))
     
             # Monte Carlo simulation (using Plotly)
-            st.subheader("Efficient Frountier")
+            st.subheader("Efficient Frontier")
             simulation_results, _ = monte_carlo_simulation(mean_returns, cov_matrix)
     
             # Plotting the simulation results with Plotly
@@ -274,7 +274,7 @@ if st.session_state.logged_in:
             fig.add_trace(go.Scatter(x=simulation_results[1], y=simulation_results[0], mode='markers',
                                      marker=dict(color=simulation_results[2], colorscale='Viridis', size=7),
                                      text=["Sharpe: {:.2f}".format(x) for x in simulation_results[2]]))
-            fig.update_layout(title="Efficient Frountier",
+            fig.update_layout(title="Efficient Frontier",
                               xaxis_title="Risk (Standard Deviation)", yaxis_title="Return")
             st.plotly_chart(fig)
     
