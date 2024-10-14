@@ -317,11 +317,12 @@ def team_info():
     # First row (2 people)
     col1, col2 = st.columns(2)
 
-    # Developer 1 in the first column
-    developer1_image_url = "https://drive.google.com/uc?export=view&id=1boOrJ_liebf1xUTk1w4u7W0ZemUE_6hN"  # Replace with your actual Google Drive file ID
+# Developer 1 in the first column
+    developer1_image_url = "https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"  # Replace with your actual Google Drive file ID
     with col1:
         # Center-align image and text
-        st.image(developer1_image_url, caption='DHARANIDHARAN P K', width=300)
+        st.markdown(f"<div style='text-align: center;'><img src='{developer1_image_url}' width='300'></div>", unsafe_allow_html=True)
+        st.markdown("<h5 style='text-align: center;'>DHARANIDHARAN P K</h5>", unsafe_allow_html=True)
         st.markdown("<p style='text-align: center;'>23MBA0059</p>", unsafe_allow_html=True)
 
     # Developer 2 in the second column
