@@ -321,8 +321,7 @@ def team_info():
     developer1_image_url = "https://drive.google.com/file/d/1boOrJ_liebf1xUTk1w4u7W0ZemUE_6hN/view?usp=sharing"  # Replace with your actual Google Drive file ID
     with col1:
         # Center-align image and text
-        st.markdown(f"<div style='text-align: center;'><img src='{developer1_image_url}' width='300'></div>", unsafe_allow_html=True)
-        st.markdown("<h5 style='text-align: center;'>DHARANIDHARAN P K</h5>", unsafe_allow_html=True)
+        st.image(developer1_image_url, caption='DHARANIDHARAN P K', width=300)
         st.markdown("<p style='text-align: center;'>23MBA0059</p>", unsafe_allow_html=True)
 
     # Developer 2 in the second column
