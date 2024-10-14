@@ -232,7 +232,7 @@ if st.button("Optimize Portfolio"):
                     results.append((selected_stocks, result.x, result))
 
         # Monte Carlo simulation (using Plotly)
-        st.subheader("Monte Carlo Simulation for Portfolio Optimization")
+        st.subheader("Efficient Frountier")
         simulation_results, _ = monte_carlo_simulation(mean_returns, cov_matrix)
 
         # Plotting the simulation results with Plotly
@@ -240,7 +240,7 @@ if st.button("Optimize Portfolio"):
         fig.add_trace(go.Scatter(x=simulation_results[1], y=simulation_results[0], mode='markers',
                                  marker=dict(color=simulation_results[2], colorscale='Viridis', size=7),
                                  text=["Sharpe: {:.2f}".format(x) for x in simulation_results[2]]))
-        fig.update_layout(title="Monte Carlo Simulation: Portfolio Optimization",
+        fig.update_layout(title="Efficient Frountier",
                           xaxis_title="Risk (Standard Deviation)", yaxis_title="Return")
         st.plotly_chart(fig)
 
