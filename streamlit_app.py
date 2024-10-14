@@ -318,7 +318,7 @@ def team_info():
     col1, col2 = st.columns(2)
 
     # Developer 1 in the first column
-    developer1_image_url = "https://drive.google.com/file/d/1boOrJ_liebf1xUTk1w4u7W0ZemUE_6hN/view?usp=sharing"  # Replace with your actual Google Drive file ID
+    developer1_image_url = "https://drive.google.com/uc?export=view&id=1boOrJ_liebf1xUTk1w4u7W0ZemUE_6hN"  # Replace with your actual Google Drive file ID
     with col1:
         # Center-align image and text
         st.image(developer1_image_url, caption='DHARANIDHARAN P K', width=300)
