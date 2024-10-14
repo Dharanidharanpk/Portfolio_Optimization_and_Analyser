@@ -318,7 +318,7 @@ def team_info():
     col1, col2 = st.columns(2)
 
     # Developer 1 in the first column
-    developer1_image_url = "https://drive.google.com/file/d/1dc4WoB-u94cNCfovD3kucA14NbgjCsE3/view?usp=drive_link"  # Replace with your actual Google Drive file ID
+    developer1_image_url = "https://drive.google.com/uc?export=view&id=1dc4WoB-u94cNCfovD3kucA14NbgjCsE3"  # Replace with your actual Google Drive file ID
     with col1:
         # Center-align image and text
         st.markdown(f"<div style='text-align: center;'><img src='{developer1_image_url}' width='300'></div>", unsafe_allow_html=True)
