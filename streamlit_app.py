@@ -294,8 +294,7 @@ if st.button("Optimize Portfolio"):
             return optimal_risk, optimal_return
         
         # Simulate the portfolios
-        mean_returns = np.array([0.12, 0.08, 0.15])  # Example mean returns
-        cov_matrix = np.array([[0.1, 0.02, 0.04], [0.02, 0.08, 0.02], [0.04, 0.02, 0.09]])  # Example covariance matrix
+        
         simulation_results, _ = monte_carlo_simulation(mean_returns, cov_matrix)
         
         # Calculate the optimal point on the Efficient Frontier
