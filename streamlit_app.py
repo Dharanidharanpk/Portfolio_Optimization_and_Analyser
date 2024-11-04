@@ -246,7 +246,7 @@ if st.button("Optimize Portfolio"):
 
 
        
-        # Monte Carlo simulation function (placeholder for your actual simulation function)
+        # Define the Monte Carlo simulation function (replace with your function as needed)
         def monte_carlo_simulation(mean_returns, cov_matrix, num_simulations=10000, risk_free_rate=0.01):
             results = np.zeros((3, num_simulations))
             for i in range(num_simulations):
@@ -263,14 +263,43 @@ if st.button("Optimize Portfolio"):
             
             return results, weights
         
+        # Define the optimization for the Efficient Frontier (finding the lowest risk for a target return)
+        def portfolio_volatility(weights, mean_returns, cov_matrix):
+            return np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights)))
         
+        def efficient_optimal_point(mean_returns, cov_matrix):
+            num_assets = len(mean_returns)
+            args = (mean_returns, cov_matrix)
+            
+            constraints = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})  # weights sum to 1
+            bounds = tuple((0, 1) for asset in range(num_assets))
+            
+            # Minimize volatility for each target return
+            target_returns = np.linspace(min(mean_returns), max(mean_returns), 100)
+            efficient_frontier = []
+            
+            for target_return in target_returns:
+                constraints = (
+                    {'type': 'eq', 'fun': lambda x: np.sum(x) - 1},
+                    {'type': 'eq', 'fun': lambda x: np.sum(x * mean_returns) - target_return}
+                )
+                result = minimize(portfolio_volatility, num_assets * [1. / num_assets], args=args,
+                                  method='SLSQP', bounds=bounds, constraints=constraints)
+                
+                if result.success:
+                    efficient_frontier.append((result.fun, target_return))
+            
+            # Find the optimal point on the Efficient Frontier (e.g., lowest risk)
+            optimal_risk, optimal_return = min(efficient_frontier, key=lambda x: x[0])
+            return optimal_risk, optimal_return
+        
+        # Simulate the portfolios
+        mean_returns = np.array([0.12, 0.08, 0.15])  # Example mean returns
+        cov_matrix = np.array([[0.1, 0.02, 0.04], [0.02, 0.08, 0.02], [0.04, 0.02, 0.09]])  # Example covariance matrix
         simulation_results, _ = monte_carlo_simulation(mean_returns, cov_matrix)
         
-        # Find the optimized point (e.g., maximum Sharpe Ratio)
-        max_sharpe_idx = np.argmax(simulation_results[2])
-        max_sharpe_return = simulation_results[0, max_sharpe_idx]
-        max_sharpe_risk = simulation_results[1, max_sharpe_idx]
-        max_sharpe_ratio = simulation_results[2, max_sharpe_idx]
+        # Calculate the optimal point on the Efficient Frontier
+        optimal_risk, optimal_return = efficient_optimal_point(mean_returns, cov_matrix)
         
         # Plotting the simulation results with Plotly
         fig = go.Figure()
@@ -284,14 +313,14 @@ if st.button("Optimize Portfolio"):
             text=["Sharpe: {:.2f}".format(x) for x in simulation_results[2]]
         ))
         
-        # Add the efficient optimized point (maximum Sharpe Ratio)
+        # Add the optimal point on the Efficient Frontier
         fig.add_trace(go.Scatter(
-            x=[max_sharpe_risk],
-            y=[max_sharpe_return],
+            x=[optimal_risk],
+            y=[optimal_return],
             mode='markers',
             marker=dict(color='red', size=10, symbol='star'),
-            name="Optimized Point (Max Sharpe Ratio)",
-            text=[f"Max Sharpe Ratio: {max_sharpe_ratio:.2f}"]
+            name="Optimal Point",
+            text=[f"Optimal Point: Return={optimal_return:.2f}, Risk={optimal_risk:.2f}"]
         ))
         
         # Update layout
@@ -303,6 +332,7 @@ if st.button("Optimize Portfolio"):
         
         # Display the plot
         st.plotly_chart(fig)
+
 
                 # Display the optimal portfolio allocation
         if results:
