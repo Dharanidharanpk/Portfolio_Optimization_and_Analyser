@@ -271,7 +271,7 @@ if st.button("Optimize Portfolio"):
 
             optimal_weights = result['x']
             # Calculate individual Sharpe Ratios for each stock
-            risk_free_rate = 0.0335  # Example risk-free rate
+            risk_free_rate = 0.0335  #risk-free rate
             sharpe_ratios = (mean_returns[stocks] - risk_free_rate) / np.sqrt(np.diag(cov_matrix.loc[stocks, stocks]))
             
             # Stock distribution pie chart
