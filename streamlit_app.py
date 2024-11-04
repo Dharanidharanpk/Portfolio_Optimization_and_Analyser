@@ -304,9 +304,9 @@ if st.button("Optimize Portfolio"):
 st.sidebar.title("Instructions")
 st.sidebar.write("""
     - Input the number of stocks you want in your portfolio.
-    - Enter the stock symbols (e.g., AAPL, MSFT) for those stocks.
+    - Enter the stock symbols (e.g. RELIANCE.NS, INFY.NS) for those stocks.
     - Specify your expected portfolio return (in %).
-    - Choose a market index symbol (e.g., ^GSPC for S&P 500) for correlation analysis.
+    - Choose a market index symbol (e.g., ^NSEI for Nifty 50) for correlation analysis.
     - Set the start and end dates for the historical data.
     - Click the "Optimize Portfolio" button to see the results, including the optimal stock allocation, portfolio performance, stock price predictions, correlation matrix, and Monte Carlo simulation.
 """)
