@@ -232,7 +232,7 @@ if st.button("Optimize Portfolio"):
                     results.append((selected_stocks, result.x, result))
 
         # Monte Carlo simulation (using Plotly)
-        st.subheader("Efficient Frontier")
+        st.subheader("Efficient Frontier ")
         simulation_results, _ = monte_carlo_simulation(mean_returns, cov_matrix)
 
         # Plotting the simulation results with Plotly
