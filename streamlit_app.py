@@ -294,12 +294,6 @@ if st.button("Optimize Portfolio"):
             st.write(f"Portfolio Risk (Standard Deviation): {expected_risk * 100:.2f}%")        
             st.write(f"Overall Sharpe Ratio: {(expected_return - risk_free_rate) / expected_risk:.2f}")
             
-            # Optionally, display the Sharpe Ratio for each stock in the Streamlit app
-            for stock, sharpe in zip(stocks, sharpe_ratios):
-                st.write(f"Sharpe Ratio for {stock}: {sharpe:.2f}")
-
-
-
 
     except Exception as e:
         st.error(f"An error occurred: {e}")
