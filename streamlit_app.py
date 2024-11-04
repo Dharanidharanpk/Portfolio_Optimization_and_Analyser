@@ -246,67 +246,7 @@ if st.button("Optimize Portfolio"):
 
 
 
-        # Monte Carlo simulation function (placeholder for your actual simulation function)
-        def monte_carlo_simulation(mean_returns, cov_matrix, num_simulations=10000, risk_free_rate=0.01):
-            results = np.zeros((3, num_simulations))
-            for i in range(num_simulations):
-                weights = np.random.random(len(mean_returns))
-                weights /= np.sum(weights)
-                
-                portfolio_return = np.sum(mean_returns * weights)
-                portfolio_stddev = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights)))
-                sharpe_ratio = (portfolio_return - risk_free_rate) / portfolio_stddev
-        
-                results[0, i] = portfolio_return
-                results[1, i] = portfolio_stddev
-                results[2, i] = sharpe_ratio
-            
-            return results, weights
-        
-        # Simulate the portfolios
-
-        simulation_results, _ = monte_carlo_simulation(mean_returns, cov_matrix)
-        
-        # Find the optimized point (e.g., maximum Sharpe Ratio)
-        max_sharpe_idx = np.argmax(simulation_results[2])
-        max_sharpe_return = simulation_results[0, max_sharpe_idx]
-        max_sharpe_risk = simulation_results[1, max_sharpe_idx]
-        max_sharpe_ratio = simulation_results[2, max_sharpe_idx]
-        
-        # Plotting the simulation results with Plotly
-        fig = go.Figure()
-        
-        # Add Monte Carlo simulation points
-        fig.add_trace(go.Scatter(
-            x=simulation_results[1],
-            y=simulation_results[0],
-            mode='markers',
-            marker=dict(color=simulation_results[2], colorscale='Viridis', size=7),
-            text=["Sharpe: {:.2f}".format(x) for x in simulation_results[2]]
-        ))
-        
-        # Add the efficient optimized point (maximum Sharpe Ratio)
-        fig.add_trace(go.Scatter(
-            x=[max_sharpe_risk],
-            y=[max_sharpe_return],
-            mode='markers',
-            marker=dict(color='red', size=10, symbol='star'),
-            name="Optimized Point (Max Sharpe Ratio)",
-            text=[f"Max Sharpe Ratio: {max_sharpe_ratio:.2f}"]
-        ))
-        
-        # Update layout
-        fig.update_layout(
-            title="Efficient Frontier",
-            xaxis_title="Risk (Standard Deviation)",
-            yaxis_title="Return"
-        )
-        
-        # Display the plot
-        st.plotly_chart(fig)
-
-
-                # Display the optimal portfolio allocation
+                        # Display the optimal portfolio allocation
         if results:
             optimal_portfolio = max(results, key=lambda x:
             portfolio_performance(x[1], mean_returns[x[0]], cov_matrix.loc[x[0], x[0]])[0])
