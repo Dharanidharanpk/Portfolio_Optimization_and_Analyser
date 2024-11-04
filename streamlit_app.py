@@ -270,23 +270,33 @@ if st.button("Optimize Portfolio"):
                               bounds=bounds, constraints=constraints)
 
             optimal_weights = result['x']
-
+            # Calculate individual Sharpe Ratios for each stock
+            risk_free_rate = 0.0175  # Example risk-free rate
+            sharpe_ratios = (mean_returns[stocks] - risk_free_rate) / np.sqrt(np.diag(cov_matrix.loc[stocks, stocks]))
+            
             # Stock distribution pie chart
             st.subheader("Stock Distribution Based on Optimal Weights")
             fig = px.pie(values=optimal_weights, names=stocks, title="Optimal Portfolio Allocation")
             st.plotly_chart(fig)
-
-            #
-            st.subheader("Optimal Portfolio Allocation")
-            allocation_df = pd.DataFrame({'Stock': stocks, 'Weightage': optimal_weights * 100})
+            
+            # Optimal Portfolio Allocation
+            allocation_df = pd.DataFrame({
+                'Stock': stocks,
+                'Weightage': optimal_weights * 100,
+                'Sharpe Ratio': sharpe_ratios  # Add Sharpe Ratio for each stock
+            })
             st.dataframe(allocation_df)
-
+            
             # Display the portfolio performance
             expected_return, expected_risk = portfolio_performance(optimal_weights, mean_returns[stocks],
                                                                    cov_matrix.loc[stocks, stocks])
             st.write(f"Expected Portfolio Return: {expected_return * 100:.2f}%")
             st.write(f"Portfolio Risk (Standard Deviation): {expected_risk * 100:.2f}%")        
-            st.write(f"Sharpe Ratio: {(expected_return - 0.0175) / expected_risk:.2f}")
+            st.write(f"Overall Sharpe Ratio: {(expected_return - risk_free_rate) / expected_risk:.2f}")
+            
+            # Optionally, display the Sharpe Ratio for each stock in the Streamlit app
+            for stock, sharpe in zip(stocks, sharpe_ratios):
+                st.write(f"Sharpe Ratio for {stock}: {sharpe:.2f}")
 
 
 
